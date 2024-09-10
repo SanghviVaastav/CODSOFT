@@ -1,0 +1,85 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class GuessingGame {
+
+    // Play a single round of the game
+    public static int playRound(int target, int triesLimit) {
+        Scanner input = new Scanner(System.in);
+        int tries = 0;   // Count how many tries the player has taken
+        int guess = -1;  // Initialize guess variable
+        
+        // Keep asking until the user guesses right or uses all tries
+        while (tries < triesLimit && guess != target) {
+            System.out.print("Guess the number: ");
+            guess = input.nextInt();
+            tries++;
+
+            // Provide feedback on the guess
+            if (guess < target) {
+                System.out.println("Too low!");
+            } else if (guess > target) {
+                System.out.println("Too high!");
+            } else {
+                System.out.println("You got it!");
+            }
+        }
+
+        // If user runs out of attempts
+        if (guess != target) {
+            System.out.println("Out of attempts! The number was: " + target);
+        }
+
+        return tries;  // Return number of tries used
+    }
+
+    // Generate a random number between min and max
+    public static int getRandom(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt(max - min + 1) + min;
+    }
+
+    // Main game loop for multiple rounds
+    public static void playGame(int min, int max, int rounds, int triesLimit) {
+        Scanner input = new Scanner(System.in);
+        int score = 0;  // Keep track of the player's score
+
+        // Loop through each round
+        for (int i = 1; i <= rounds; i++) {
+            System.out.println("\nRound " + i);
+            int target = getRandom(min, max);  // Pick a new number to guess
+
+            // Play one round and get the number of tries used
+            int triesUsed = playRound(target, triesLimit);
+
+            // Calculate score: more points for fewer tries
+            if (triesUsed <= triesLimit) {
+                score += (triesLimit - triesUsed) + 1;
+            }
+        }
+
+        // Display final score
+        System.out.println("\nGame over! Your total score: " + score);
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        // Set the range for random numbers
+        int min = 1;
+        int max = 100;
+
+        // Get number of rounds and tries per round from the player
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.print("How many rounds do you want to play? ");
+        int rounds = input.nextInt();
+
+        System.out.print("How many attempts per round? ");
+        int triesLimit = input.nextInt();
+
+        // Start the game
+        playGame(min, max, rounds, triesLimit);
+        
+        input.close();  // Close scanner resource
+    }
+}
