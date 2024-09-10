@@ -1,0 +1,210 @@
+import java.util.ArrayList;  
+import java.util.Scanner;  
+
+// Class to represent a Student  
+class Student {  
+    private String name;  
+    private String rollNo;  
+    private String grade;  
+
+    // Constructor to initialize student details  
+    public Student(String name, String rollNo, String grade) {  
+        this.name = name;  
+        this.rollNo = rollNo;  
+        this.grade = grade;  
+    }  
+
+    // Getters and setters for the Student attributes  
+    public String getName() {  
+        return name;  
+    }  
+
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+
+    public String getRollNo() {  
+        return rollNo;  
+    }  
+
+    public void setRollNo(String rollNo) {  
+        this.rollNo = rollNo;  
+    }  
+
+    public String getGrade() {  
+        return grade;  
+    }  
+
+    public void setGrade(String grade) {  
+        this.grade = grade;  
+    }  
+
+    // Method to display student details  
+    @Override  
+    public String toString() {  
+        return "Name: " + name + ", Roll No: " + rollNo + ", Grade: " + grade;  
+    }  
+}  
+
+// Class to manage the student collection  
+class StudentManagementSystem {  
+    private ArrayList<Student> students = new ArrayList<>();  
+    private Scanner input = new Scanner(System.in);  
+
+    // Add a new student  
+    public void addStudent() {  
+        System.out.print("Enter student's name: ");  
+        String name = input.nextLine();  
+
+        System.out.print("Enter roll number: ");  
+        String rollNo = input.nextLine();  
+
+        System.out.print("Enter grade: ");  
+        String grade = input.nextLine();  
+
+        // Ensure none of the fields are empty  
+        if (name.isEmpty() || rollNo.isEmpty() || grade.isEmpty()) {  
+            System.out.println("All fields are required!");  
+            return;  
+        }  
+
+        students.add(new Student(name, rollNo, grade));  
+        System.out.println("Student added successfully.");  
+    }  
+
+    // Remove a student by roll number  
+    public void removeStudent() {  
+        System.out.print("Enter roll number of the student to remove: ");  
+        String rollNo = input.nextLine();  
+
+        // Find the student by roll number  
+        Student studentToRemove = null;  
+        for (Student student : students) {  
+            if (student.getRollNo().equalsIgnoreCase(rollNo)) {  
+                studentToRemove = student;  
+                break;  
+            }  
+        }  
+
+        if (studentToRemove != null) {  
+            students.remove(studentToRemove);  
+            System.out.println("Student removed successfully.");  
+        } else {  
+            System.out.println("Student not found.");  
+        }  
+    }  
+
+    // Search for a student by roll number  
+    public void searchStudent() {  
+        System.out.print("Enter roll number to search: ");  
+        String rollNo = input.nextLine();  
+
+        for (Student student : students) {  
+            if (student.getRollNo().equalsIgnoreCase(rollNo)) {  
+                System.out.println(student);  
+                return;  
+            }  
+        }  
+
+        System.out.println("Student not found.");  
+    }  
+
+    // Display all students  
+    public void displayAllStudents() {  
+        if (students.isEmpty()) {  
+            System.out.println("No students to display.");  
+            return;  
+        }  
+
+        for (Student student : students) {  
+            System.out.println(student);  
+        }  
+    }  
+
+    // Edit student details by roll number  
+    public void editStudent() {  
+        System.out.print("Enter roll number of the student to edit: ");  
+        String rollNo = input.nextLine();  
+
+        for (Student student : students) {  
+            if (student.getRollNo().equalsIgnoreCase(rollNo)) {  
+                System.out.println("Editing student: " + student);  
+
+                System.out.print("Enter new name (leave blank to keep unchanged): ");  
+                String newName = input.nextLine();  
+
+                System.out.print("Enter new grade (leave blank to keep unchanged): ");  
+                String newGrade = input.nextLine();  
+
+                // Update name and grade if not empty  
+                if (!newName.isEmpty()) {  
+                    student.setName(newName);  
+                }  
+
+                if (!newGrade.isEmpty()) {  
+                    student.setGrade(newGrade);  
+                }  
+
+                System.out.println("Student details updated.");  
+                return;  
+            }  
+        }  
+
+        System.out.println("Student not found.");  
+    }  
+
+    // Main menu to interact with the system  
+    public void menu() {  
+        while (true) {  
+            System.out.println("\n--- Student Management System ---");  
+            System.out.println("1. Add Student");  
+            System.out.println("2. Remove Student");  
+            System.out.println("3. Search Student");  
+            System.out.println("4. Display All Students");  
+            System.out.println("5. Edit Student");  
+            System.out.println("6. Exit");  
+            System.out.print("Choose an option: ");  
+
+            // Check for correct input type  
+            while (!input.hasNextInt()) {  
+                System.out.println("Please enter a valid number.");  
+                input.next(); // Consume invalid input  
+            }  
+
+            int choice = input.nextInt();  
+            input.nextLine(); // Consume newline  
+
+            switch (choice) {  
+                case 1:  
+                    addStudent();  
+                    break;  
+                case 2:  
+                    removeStudent();  
+                    break;  
+                case 3:  
+                    searchStudent();  
+                    break;  
+                case 4:  
+                    displayAllStudents();  
+                    break;  
+                case 5:  
+                    editStudent();  
+                    break;  
+                case 6:  
+                    System.out.println("Exiting the system...");  
+                    input.close(); // Close the scanner to release resources  
+                    return;  
+                default:  
+                    System.out.println("Invalid choice, please try again.");  
+            }  
+        }  
+    }  
+}  
+
+// Main class to start the system  
+public class Main {  
+    public static void main(String[] args) {  
+        StudentManagementSystem sms = new StudentManagementSystem();  
+        sms.menu(); // Start the system menu  
+    }  
+}
