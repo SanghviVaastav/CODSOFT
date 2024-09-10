@@ -1,0 +1,92 @@
+import java.util.Scanner;
+
+public class GradeCalculator {
+
+    // Method to calculate total marks
+    public static int getTotalMarks(int[] marks) {
+        int total = 0;
+        for (int mark : marks) {
+            total += mark;
+        }
+        return total;
+    }
+
+    // Method to calculate average percentage
+    public static double getAverage(int totalMarks, int numSubjects) {
+        return (double) totalMarks / numSubjects;
+    }
+
+    // Method to determine grade based on average percentage
+    public static String getGrade(double average) {
+        if (average >= 90) {
+            return "A";
+        } else if (average >= 80) {
+            return "B";
+        } else if (average >= 70) {
+            return "C";
+        } else if (average >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+
+    // Method to show results
+    public static void showResults(String studentName, int totalMarks, double average, String grade) {
+        System.out.println("Student: " + studentName);
+        System.out.println("Total Marks: " + totalMarks);
+        System.out.println("Average Percentage: " + average + "%");
+        System.out.println("Grade: " + grade);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input number of students
+        System.out.println("Enter the number of students: ");
+        int numStudents = scanner.nextInt();
+        scanner.nextLine(); // Consume newline character
+
+        // Loop for each student
+        for (int i = 0; i < numStudents; i++) {
+            System.out.println("\nEnter the student's name: ");
+            String studentName = scanner.nextLine();
+
+            // Input number of subjects
+            System.out.println("Enter the number of subjects: ");
+            int numSubjects = scanner.nextInt();
+
+            // Validate number of subjects
+            while (numSubjects <= 0) {
+                System.out.println("Number of subjects should be more than 0. Please try again:");
+                numSubjects = scanner.nextInt();
+            }
+
+            int[] marks = new int[numSubjects];
+
+            // Input marks for each subject
+            for (int j = 0; j < numSubjects; j++) {
+                System.out.println("Enter marks for subject " + (j + 1) + " (out of 100): ");
+                int mark = scanner.nextInt();
+
+                // Validate marks input
+                while (mark < 0 || mark > 100) {
+                    System.out.println("Invalid input. Marks should be between 0 and 100. Please enter again:");
+                    mark = scanner.nextInt();
+                }
+                marks[j] = mark;
+            }
+            scanner.nextLine(); // Handle newline
+
+            // Calculate total marks, average percentage, and grade
+            int totalMarks = getTotalMarks(marks);
+            double average = getAverage(totalMarks, numSubjects);
+            String grade = getGrade(average);
+
+            // Display results for the student
+            showResults(studentName, totalMarks, average, grade);
+        }
+
+        scanner.close();
+    }
+}
